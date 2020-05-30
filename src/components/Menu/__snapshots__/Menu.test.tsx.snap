@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Menu and MenuItem component in default(horizontal) mode matches snapshot 1`] = `
+<DocumentFragment>
+  <ul
+    class="manu-menu test menu-horizontal"
+    data-testid="test-menu"
+  >
+    <li
+      class="menu-item is-active"
+    >
+      active
+    </li>
+    <li
+      class="menu-item is-disabled"
+    >
+      disabled
+    </li>
+    <li
+      class="menu-item"
+    >
+      xyz
+    </li>
+    <li
+      class="menu-item"
+    >
+      manu
+    </li>
+  </ul>
+</DocumentFragment>
+`;
+
+exports[`test Menu and MenuItem component in vertical mode matches snapshot 1`] = `
+<DocumentFragment>
+  <ul
+    class="manu-menu test menu-vertical"
+    data-testid="test-menu"
+  >
+    <li
+      class="menu-item is-active"
+    >
+      active
+    </li>
+    <li
+      class="menu-item is-disabled"
+    >
+      disabled
+    </li>
+    <li
+      class="menu-item"
+    >
+      xyz
+    </li>
+    <li
+      class="menu-item"
+    >
+      manu
+    </li>
+  </ul>
+</DocumentFragment>
+`;
