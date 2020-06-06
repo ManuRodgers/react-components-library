@@ -1,52 +1,81 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
 
+import AutoComplete, {
+  DataSourceType,
+} from './components/AutoComplete/AutoComplete';
 import Button from './components/Button/Button';
-import Icon from './components/Icon/Icon';
 import Menu from './components/Menu/Menu';
 import MenuItem from './components/Menu/MenuItem';
 import SubMenu from './components/Menu/SubMenu';
 import Transition from './components/Transition/Transition';
 
+const lakers = [
+  'bradley',
+  'pope',
+  'caruso',
+  'cook',
+  'cousins',
+  'james',
+  'AD',
+  'green',
+  'howard',
+  'kuzma',
+  'McGee',
+  'Rando',
+];
+interface GithubUserProps {
+  login: string;
+  url: string;
+  avatar_url: string;
+}
 export interface AppProps {
   children?: ReactNode;
 }
 
 const App: FC<AppProps> = () => {
   const [show, setShow] = useState<boolean>(false);
+  // const fetchSuggestions = useCallback((query: string) => {
+  //   return lakers
+  //     .filter((name) => name.includes(query))
+  //     .map((name) => {
+  //       return { value: name };
+  //     });
+  // }, []);
+  const fetchSuggestions = useCallback(async (query: string) => {
+    try {
+      const res = await fetch(`https://api.github.com/search/users?q=${query}`);
+      const { items } = await res.json();
+      console.log('items: ', items);
+      return items
+        .slice(0, 10)
+        .map((item: { login: any }) => ({ value: item.login, ...item }));
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const renderOption = useCallback((item: DataSourceType) => {
+    const itemWithGithub = item as DataSourceType<GithubUserProps>;
+    return (
+      <div>
+        <img width={32} height={32} src={itemWithGithub.avatar_url} />
+        <br />
+        <span>{itemWithGithub.login}</span>
+        <br />
+        <span>{itemWithGithub.url}</span>
+        <hr />
+      </div>
+    );
+  }, []);
   return (
     <div className="App">
-      <Menu
-        mode="horizontal"
-        defaultIndex="0"
-        onSelect={(index): void => {
-          console.log('index: ', index);
+      <AutoComplete
+        fetchSuggestions={fetchSuggestions}
+        onSelect={(item): void => {
+          console.log('item: ', item.value);
         }}
-        defaultOpenSubMenus={['3']}
-      >
-        <MenuItem index={'1'}>cool link 1</MenuItem>
-        <MenuItem index={'2'}>cool link 2</MenuItem>
-        <SubMenu title="dropdown" index="3">
-          <MenuItem index={'1'}>dropdown 1</MenuItem>
-          <MenuItem index={'2'}>dropdown 2</MenuItem>
-        </SubMenu>
-        <MenuItem index={'4'}>cool link 3</MenuItem>
-      </Menu>
-      <Button
-        size="lg"
-        onClick={() => {
-          setShow(!show);
-        }}
-      >
-        Toggle
-      </Button>
-      <Transition wrapper in={show} timeout={300} animation="zoom-in-left">
-        <p>hello</p>
-        <p>mate</p>
-        <p>how</p>
-        <p>you</p>
-        <p>doing</p>
-        <Button size="lg">Toggle</Button>
-      </Transition>
+        renderOption={renderOption}
+      />
     </div>
   );
 };

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test Input component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="viking-input-wrapper"
+  >
+    <input
+      class="viking-input-inner"
+      placeholder="test-input"
+    />
+  </div>
+</DocumentFragment>
+`;
